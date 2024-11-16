@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import Axios from "axios"
 import { useNavigate } from "react-router-dom";
-import { registerPasswordRoute } from "../../../root";
+import { registerPasswordRoute } from "../../../routers/routes";
 
 export default function Password() {
 

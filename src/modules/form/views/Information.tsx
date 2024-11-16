@@ -1,4 +1,4 @@
-import { registerBasicInfoRoute } from "../../../root";
+import { registerBasicInfoRoute } from "../../../routers/routes";
 import Axios from "axios"
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";

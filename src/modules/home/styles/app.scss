@@ -1,0 +1,77 @@
+@use "../../../styles/global" as *;
+
+#justchat {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: [col-start] 25rem [col-end] 1fr;
+
+
+    section {
+    
+        &:nth-child(1) {
+            display: flex;
+            flex-direction: column;
+            background-color: $dark;
+
+            .view {
+                height: 100%;
+            }
+
+            .bottom-navigation-bar {
+                display: flex;
+                padding: 1rem 0;
+                align-items: center;
+                border-top: 1px solid $light-dark;
+                justify-content: space-between;
+
+                a {
+                    width: 100%;
+                    text-decoration: none;
+                    
+                    button {
+                        gap: 1rem;
+                        width: 100%;
+                        border: none;
+                        display: flex;
+                        cursor: pointer;
+                        background: none;
+                        align-items: center;
+                        padding: .5rem 1rem;
+                        
+                        svg {
+                            color: #fff;
+                            transition: .5s ease;
+                        }
+
+                        p {
+                            color: #fff;
+                            font-size: 1.1em;
+                            transition: .5s ease;
+                        }
+                    }
+
+                    &:nth-child(2) {
+                        border-left: 1px solid $light-dark;
+                        border-right: 1px solid $light-dark;
+                    }
+                
+                    &:hover {
+                        svg, p {
+                            color: $primary-theme;
+                        }
+                    }
+                }
+            }
+        }
+    
+
+
+
+
+        &:nth-child(2) {
+            display: flex;
+            flex-direction: column;    
+        }
+    
+    }
+}
