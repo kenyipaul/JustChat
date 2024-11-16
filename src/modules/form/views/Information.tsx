@@ -1,4 +1,4 @@
-import { registerBasicInfoRoute } from "../../../routers/routes";
+import { signupUserInfo } from "../../../routers/routes";
 import Axios from "axios"
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
@@ -17,33 +17,36 @@ export default function Information() {
         setImageName(imageRef.current!.files![0].name)
     }
 
-    // useEffect(() => {
-    //     let savedId = sessionStorage.getItem("_user_id");
+    useEffect(() => {
+        let savedId = sessionStorage.getItem("_userId");
 
-    //     if (savedId == null)
-    //         navigate("/register")
-    //     else
-    //         setUserId(savedId); 
-    // }, [])
+        if (savedId == null)
+            navigate("/register")
+        else
+            setUserId(savedId); 
+    }, [])
 
     const validate = () => {
         const biography = bioRef.current!.value;
         const profileImage = imageRef.current!.files![0];
 
-        if (biography !== "" && profileImage !== null) {
+
+        if (biography !== "" && profileImage !== undefined) {
             
             let reader = new FileReader();
             
             reader.onload = () => {
-                Axios.post(registerBasicInfoRoute, {
+                Axios.post(signupUserInfo, {
                     userId: userId,
                     profileImage: reader.result,
                     bio: biography
                 })
                 .then((response) => {
-                    if (response.data.userId) {
+                    if (response.data.acknowledged) {
                         navigate("/register/password")
                     }
+                }).catch((error) => {
+                    alert(error.response.data.msg)
                 })
             }
             reader.readAsDataURL(profileImage)

@@ -1,7 +1,11 @@
+import Axios from "axios"
 import { useRef } from "react"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signupRoute } from "../../../routers/routes";
 
 export default function Signup() {
+
+    const navigate = useNavigate();
 
     const usernameRef = useRef<HTMLInputElement>(null);
     const firstNameRef = useRef<HTMLInputElement>(null);
@@ -9,7 +13,26 @@ export default function Signup() {
     const emailRef = useRef<HTMLInputElement>(null);
 
     const validate = () => {
+        let username = usernameRef.current!.value;
+        let firstname = firstNameRef.current!.value;
+        let lastname = lastNameRef.current!.value;
+        let email = emailRef.current!.value;
+   
+        
+        if (username !== "" && firstname !== "" && lastname !== "" && email !== "") {
 
+            Axios.post(signupRoute, { username, firstname, lastname, email }).then((response) => {
+                if (response.data.acknowledged) {
+                    sessionStorage.setItem("_userId", response.data.userId)
+                    navigate("/register/info")
+                } else {
+                    alert(response.data.msg)
+                }
+            })
+
+        } else {
+            alert("Please fill in this form")
+        }
     }
 
     return (

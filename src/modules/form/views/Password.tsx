@@ -1,8 +1,8 @@
 "use client"
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Axios from "axios"
 import { useNavigate } from "react-router-dom";
-import { registerPasswordRoute } from "../../../routers/routes";
+import { signupUserPass } from "../../../routers/routes";
 
 export default function Password() {
 
@@ -11,37 +11,40 @@ export default function Password() {
     const passRef = useRef<HTMLInputElement>(null);
     const pass2Ref = useRef<HTMLInputElement>(null);
 
-    // useEffect(() => {
-    //     let savedId = sessionStorage.getItem("_user_id");
+    useEffect(() => {
+        let savedId = sessionStorage.getItem("_userId");
 
-    //     if (savedId == null)
-    //         navigate("/register")
-    // }, [])
+        if (savedId == null)
+            navigate("/register")
+
+    }, [])
 
     const validate = () => {
         const password = passRef.current!.value;
         const confirmPassword = pass2Ref.current!.value;
-        const userId = sessionStorage.getItem("_user_id")
+        const userId = sessionStorage.getItem("_userId")
 
         if (userId == null) {
             navigate("/");
         } else {
-            if (password !== confirmPassword) {
-                alert("Passwords don't match")
+            if (password == "") {
+                alert("Please input a password")
             } else {
-
-                Axios.post(registerPasswordRoute, {
-                    userId: userId,
-                    password: password
-                }).then((response) => {
-                    if (response.data.user) {
-                        if (confirm("Signup Successful, Would you like to login now?")) {
-                            sessionStorage.removeItem("_user_id")
+                if (password !== confirmPassword) {
+                    alert("Passwords don't match")
+                } else {
+    
+                    Axios.post(signupUserPass, {
+                        userId: userId,
+                        password: password
+                    }).then((response) => {
+                        if (response.data.acknowledged) {
+                            alert("Signup was successful, you are currently being redirected to the login page")
+                            sessionStorage.removeItem("_userId")
                             navigate("/");
                         }
-                        sessionStorage.removeItem("_user_id")
-                    }
-                })
+                    })
+                }
             }
         }
     }

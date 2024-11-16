@@ -1,4 +1,9 @@
+import Axios from "axios"
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, Outlet, useLocation } from "react-router-dom"
+import { addFriendRoute, backendHost, declineRequestRoute, getFriendRequestRoute, peopleRoute, acceptFriendRequest } from "../../../routers/routes";
+import { UserContext } from "../app";
+
 
 export default function People() {
 
@@ -25,18 +30,163 @@ export default function People() {
 }
 
 
+// export function PeopleTab() {
+//     return (
+//         <>
+//             <h1>PEOPLE</h1>
+//         </>
+//     )
+// }
+
+// export function FriendRequestTab() {
+//     return (
+//         <>
+//             <h1>FRIEND REQUEST</h1>
+//         </>
+//     )
+// }
+
+
+interface personType {
+    userId: string,
+    username: string,
+    firstName: string,
+    lastName: string,
+    profile_picture: string
+}
+
 export function PeopleTab() {
+
+    const [response, setResponse] = useState([])
+
+    const userContext = useContext(UserContext);
+
+    if (userContext == null)
+        throw new Error("Chat must be wrapped in User Context")
+
+    const {user, changeUser} = userContext;
+
+    useEffect(() => {
+        Axios.post(peopleRoute,{
+            userId: user.id
+        }).then((response) => {
+            setResponse(response.data)
+        })
+    }, [])
+
+    const addAsFriend = (id: string | number) => {
+        Axios.post(addFriendRoute, {
+            to: id,
+            from: user.id
+        }).then((response) => {
+            if (response.data.msg) {
+                alert(response.data.msg)
+            }
+        })
+    }
+
     return (
-        <>
-            <h1>PEOPLE</h1>
-        </>
+        <div className="content">
+            <div className="people-container">
+                {
+                    response.map((person: personType, index) => {
+                        return <>                        
+                            <div className="person">
+                                <section>
+                                    <div className="profile" style={{
+                                        backgroundImage: `url(${backendHost}/${person.profile_picture})`
+                                    }}></div>
+                                    <div className="info">
+                                        <h1>{`${person.firstName} ${person.lastName}`}</h1>
+                                        <p>@{person.username}</p>
+                                    </div>
+                                </section>
+                                <svg onClick={() => addAsFriend(person.userId)} className="addFriendBtn" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <circle cx="12" cy="6" r="4" fill="currentColor"/> <path fillRule="evenodd" clipRule="evenodd" d="M16.5 22C14.8501 22 14.0251 22 13.5126 21.4874C13 20.9749 13 20.1499 13 18.5C13 16.8501 13 16.0251 13.5126 15.5126C14.0251 15 14.8501 15 16.5 15C18.1499 15 18.9749 15 19.4874 15.5126C20 16.0251 20 16.8501 20 18.5C20 20.1499 20 20.9749 19.4874 21.4874C18.9749 22 18.1499 22 16.5 22ZM17.0833 16.9444C17.0833 16.6223 16.8222 16.3611 16.5 16.3611C16.1778 16.3611 15.9167 16.6223 15.9167 16.9444V17.9167H14.9444C14.6223 17.9167 14.3611 18.1778 14.3611 18.5C14.3611 18.8222 14.6223 19.0833 14.9444 19.0833H15.9167V20.0556C15.9167 20.3777 16.1778 20.6389 16.5 20.6389C16.8222 20.6389 17.0833 20.3777 17.0833 20.0556V19.0833H18.0556C18.3777 19.0833 18.6389 18.8222 18.6389 18.5C18.6389 18.1778 18.3777 17.9167 18.0556 17.9167H17.0833V16.9444Z" fill="currentColor"/> <path d="M15.4147 13.5074C14.4046 13.1842 13.24 13 12 13C8.13401 13 5 14.7909 5 17C5 19.1406 7.94244 20.8884 11.6421 20.9949C11.615 20.8686 11.594 20.7432 11.5775 20.6201C11.4998 20.0424 11.4999 19.3365 11.5 18.586V18.414C11.4999 17.6635 11.4998 16.9576 11.5775 16.3799C11.6639 15.737 11.8705 15.0333 12.4519 14.4519C13.0334 13.8705 13.737 13.6639 14.3799 13.5774C14.6919 13.5355 15.0412 13.5162 15.4147 13.5074Z" fill="currentColor"/> </svg>
+                            </div>
+                        </>
+                    })
+                }
+            </div>
+        </div>
     )
 }
 
+
+
 export function FriendRequestTab() {
+
+    const [response, setResponse] = useState([]);
+    const [updater, setUpdater] = useState(false)
+    const userContext = useContext(UserContext);
+
+    if (userContext == null)
+        throw new Error("Chat must be wrapped in User Context")
+
+    const {user, changeUser} = userContext;
+
+    useEffect(() => {
+        Axios.post(getFriendRequestRoute, {
+            userId: user.id
+        }).then((response) => {
+            setResponse(response.data)
+        })
+    }, [updater])
+
+
+    const declineRequest = (id: string | number) => {
+        Axios.post(declineRequestRoute, {
+            userId: user.id,
+            friendId: id
+        }).then((response) => {
+            if (response.data.acknowledged) {
+                alert(response.data.msg)
+                setUpdater(!updater)
+            } else {
+                alert(response.data.msg)
+            }
+        })
+    }
+
+    const acceptRequest = (id: string | number) => {
+        Axios.post(acceptFriendRequest, {
+            userId: user.id,
+            friendId: id
+        }).then((response) => {
+            if (response.data.acknowledged) {
+                alert(response.data.msg)
+                setUpdater(!updater)
+            } else {
+                alert(response.data.msg)
+            }
+        })
+    }
+
+
     return (
-        <>
-            <h1>FRIEND REQUEST</h1>
-        </>
+        <div className="content">
+            <div className="requests-container">
+                {
+                    response.map((data: personType, key) => {
+                        return <>
+                            <div key={key} className="request">
+                                <section>
+                                    <div className="profile" style={{
+                                        backgroundImage: `url(${backendHost}/${data.profile_picture})`
+                                    }}></div>
+                                    <div className="info">
+                                        <h1>{`${data.firstName} ${data.lastName}`}</h1>
+                                        <p>@{data.username}</p>
+                                    </div>
+                                </section>
+                                <section>
+                                    <svg onClick={() => declineRequest(data.id)}  width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path opacity="0.5" d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12Z" stroke="currentColor" strokeWidth="1.5"/> <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="currentColor" strokeWidth="1.5" stroke-linecap="round"/> </svg>
+                                    <svg onClick={() => acceptRequest(data.id)} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path opacity="0.5" d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12Z" stroke="currentColor" strokeWidth="1.5"/> <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="currentColor" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>
+                                </section>
+                            </div>
+                        </>
+                    })
+                }
+            </div>
+        </div>
     )
 }

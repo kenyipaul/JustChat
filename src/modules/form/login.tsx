@@ -21,11 +21,11 @@ export default function Login() {
             email: email,
             password: password,
         }).then((response) => {
-            if (response.data.user == false) {
+            if (!response.data.acknowledged) {
                 alert(response.data.msg)
-            } else if (response.data.token) {
+            } else if (response.data.acknowledged) {
                 sessionStorage.setItem("_token", response.data.token)
-                navigate("/chat")
+                navigate("/justchat")
             }
         })
     }
