@@ -1,0 +1,111 @@
+@use "../../../styles/global" as *;
+
+.chat-view {
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+
+    .top-bar {
+        padding: 1rem;
+        border-bottom: 1px solid $light-dark;
+    
+        div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            justify-content: space-between;
+
+            h1 {
+                color: #fff;
+                font-size: 1.6em;
+                font-family: $primary-font-bold;
+            }
+
+            .menuBtn {
+                width: 2rem;
+                color: #fff;
+                height: 2rem;
+                cursor: pointer;
+            }
+        }
+
+        input {
+            color: #fff;
+            width: 100%;
+            border: none;
+            outline: none;
+            padding: 1rem;
+            font-size: 1em;
+            border-radius: .6rem;
+            background: $light-dark;
+        }
+    }
+
+
+    .chat-list {
+        height: 100%;
+        display: grid;
+        overflow-y: scroll;
+        align-content: start;
+        scrollbar-width: none;
+    }
+
+    .chat {
+        gap: 1rem;
+        display: flex;
+        cursor: pointer;
+        position: relative;
+        align-items: center;
+        padding: .7rem 1rem;
+        overflow: hidden;
+        
+        &:hover {
+            background: $light-dark;
+        }
+
+        .profile {
+            min-width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            @include centerElem;
+            background: #0f0;
+
+            .cover {
+                width: 80%;
+                height: 80%;
+                border-radius: 50%;
+                background: $light-dark;
+                background-size: cover;
+                outline: 3px solid $dark;
+                background-position: center;
+                background-image: url(/assets/images/profile.jpg);
+            }
+        }
+
+        .info {
+            overflow: hidden;
+
+            h1 {
+                color: #fff;
+                font-size: 1.2em;
+                font-family: $primary-font-bold;
+            }
+            p {
+                color: #888;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                // font-family: $primary-font-bold;
+            }
+        }
+
+        .time {
+            top: .8rem;
+            right: 1rem;
+            color: #888;
+            font-size: .8em;
+            position: absolute;
+        }
+    }
+
+}

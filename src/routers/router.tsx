@@ -10,7 +10,7 @@ import App from "../modules/home/app"
 import Register from "../modules/form/register"
 
 import Settings from "../modules/home/views/settings"
-import People from "../modules/home/views/people"
+import People, { FriendRequestTab, PeopleTab } from "../modules/home/views/people"
 import Chats from "../modules/home/views/chats"
 
 export const router = createBrowserRouter([
@@ -46,7 +46,17 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/justchat/people",
-                element: <People />
+                element: <People />,
+                children: [
+                    {
+                        path: "/justchat/people/",
+                        element: <PeopleTab />
+                    },
+                    {
+                        path: "/justchat/people/friendrequests",
+                        element: <FriendRequestTab />
+                    }
+                ]
             },
             {
                 path: "/justchat/settings",

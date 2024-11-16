@@ -1,20 +1,25 @@
 @use "../../../styles/global" as *;
+@use "./chats";
+@use "./people";
 
 #justchat {
     height: 100vh;
     display: grid;
+    overflow: hidden;
     grid-template-columns: [col-start] 25rem [col-end] 1fr;
 
 
     section {
-    
+        height: 100%;
+        overflow: hidden;
+
         &:nth-child(1) {
             display: flex;
             flex-direction: column;
             background-color: $dark;
 
             .view {
-                height: 100%;
+                height: 100vh;
             }
 
             .bottom-navigation-bar {
@@ -60,12 +65,16 @@
                             color: $primary-theme;
                         }
                     }
+
+                    &.active {
+                        svg, p {
+                            color: $primary-theme;
+                        }
+                    }
                 }
             }
         }
     
-
-
 
 
         &:nth-child(2) {
