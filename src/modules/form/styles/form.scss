@@ -1,0 +1,104 @@
+@use "../../../styles/global" as *;
+
+#form-wrapper {
+    display: flex;
+    height: 100vh;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    background: $darker;
+
+    .title-bar {
+        gap: 1rem;
+        display: grid;
+        margin: 1rem 0;
+
+        h1 {
+            font-family: $primary-font-bold;
+        }
+
+        p {
+            font-size: 1.1em;
+            font-weight: 400;
+            color: $primary-theme;
+        }
+    }
+
+    h1 { color: #fff }
+
+    form {
+        gap: 1rem;
+        width: 100%;
+        padding: 1rem;
+        display: grid;
+        max-width: 450px;
+
+        .multi-input-area {
+            display: grid;
+            gap: .5rem;
+            grid-template-columns: [col-start] 1fr [col-end] 1fr;
+        }
+
+        .input-area {
+            gap: .4rem;
+            display: grid;
+
+            label {
+                color: #ddd;
+                font-weight: 900;
+                font-family: geogrotesque;
+            }
+
+            .profile_picture_label {
+                @extend label;
+            }
+
+            input[type="file"] {
+                display: none;
+            }
+
+            label[for="profile_picture"] {
+                @extend input; 
+                cursor: pointer;
+            }
+            
+            
+            input {
+                width: 100%;
+                border: none;
+                outline: none;
+                padding: 1rem;
+                font-size: 1em;
+                color: #fff;
+                background: $dark;
+                border: 1px solid $light-dark;
+                border-radius: .6rem;
+            }
+
+            textarea {
+                resize: none;
+                height: 150px;
+                @extend .input-area, input;
+            }
+        }
+
+        p { color: #fff }
+
+        a {
+            font-weight: 900;
+            text-decoration: none;
+            color: $primary-theme;
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            font-weight: 900;
+            padding: 1.1rem 1rem;
+            border-radius: .6rem;
+            background: $primary-theme;
+            border: 1px solid $primary-theme;
+        }
+    }
+}
