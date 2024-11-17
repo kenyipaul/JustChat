@@ -1,0 +1,98 @@
+@use "../../../styles/global" as *;
+
+.settings-view {
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+
+    .topBar {
+        display: flex;
+        padding: 1rem;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid $light-dark;
+
+        .user-profile {
+            gap: 1rem;
+            display: flex;
+            align-items: center;
+
+            .cover {
+                width: 3.5rem;
+                height: 3.5rem;
+                cursor: pointer;
+                border-radius: 50%;
+                background: #ff0053;
+            }
+
+            .info {
+                h1 {
+                    color: #fff;
+                    font-size: 1.2em;
+                }
+                p {
+                    color: #ccc;
+                }
+            }
+        }
+
+        .logoutBtn {
+            color: #fff;
+            cursor: pointer;
+        }
+
+    }
+
+
+    .content {
+        height: 100%;
+        display: flex;
+        padding: 1rem;
+        overflow: hidden;
+        flex-direction: column;
+
+        .title {
+            color: #fff;
+        }
+
+        .settings {
+            overflow-y: scroll;
+            scrollbar-width: none;
+
+            textarea {
+                color: #fff;
+                width: 100%;
+                resize: none;
+                border: none;
+                height: 100px;
+                padding: 1rem;
+                outline: none;
+                border-radius: .7rem;
+                background: $light-dark
+            }
+            
+            ul {
+                padding: 1rem 0;
+                border-bottom: 1px solid $light-dark;
+                
+                li {
+                    padding: 1rem;
+                    color: #ddd;
+                    list-style: none;
+                    cursor: pointer;
+                    transition: .5s ease;
+                    border-radius: .5rem;
+                    
+                    h1 {
+                        color: #fff;
+                        font-size: 1.1em;
+                        font-family: $primary-font-bold;
+                    }
+                    
+                    &:hover { background-color: $light-dark; }
+                }
+            }
+        }
+    }
+
+}

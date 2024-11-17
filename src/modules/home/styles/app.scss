@@ -1,6 +1,7 @@
 @use "../../../styles/global" as *;
 @use "./chats";
 @use "./people";
+@use "./settings";
 
 #justchat {
     height: 100vh;
